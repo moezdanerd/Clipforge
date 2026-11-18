@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClipForge – AI clipping for YouTubers</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#12141c;--mut:#6b7185;--line:#e6e8f0;--acc:#6d4aff;--acc2:#ff4a8d;--ok:#12a566;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1017;--card:#171a24;--ink:#f1f2f7;--mut:#8f95aa;--line:#262a38;--ok:#35d08a}}
+:root[data-theme="dark"]{--bg:#0e1017;--card:#171a24;--ink:#f1f2f7;--mut:#8f95aa;--line:#262a38;--ok:#35d08a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:20px}
+nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.5px}.logo b{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;color:transparent}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font-weight:600}
+.pri{background:linear-gradient(90deg,var(--acc),var(--acc2));color:#fff}.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.hero{text-align:center;padding:40px 0}.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.08;margin:0 0 12px;letter-spacing:-1.5px}
+.hero p{color:var(--mut);max-width:520px;margin:0 auto 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.grid{display:grid;gap:14px}.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.stat b{display:block;font-size:26px;letter-spacing:-.5px}.stat span{color:var(--mut);font-size:13px}
+h2{font-size:18px;margin:26px 0 12px;letter-spacing:-.3px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:500}
+.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.clip{display:flex;gap:14px}.thumb{flex:0 0 84px;height:140px;border-radius:12px;background:linear-gradient(160deg,var(--acc),var(--acc2));color:#fff;display:flex;align-items:flex-end;padding:8px;font-size:12px;font-weight:700}
+.meta{min-width:0}.meta h3{margin:0 0 4px;font-size:15px}.tags{color:var(--acc);font-size:13px;word-break:break-word}.desc{color:var(--mut);font-size:13px;margin:4px 0}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}.badge.q{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sw{width:44px;height:26px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;flex:none}.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}.sw.on{background:var(--ok)}.sw.on::after{left:21px}
+input{font:inherit;width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.hide{display:none}.note{color:var(--mut);font-size:12px;margin-top:20px;text-align:center}
+</style></head><body><div class="wrap">
+<nav><div class="logo">Clip<b>Forge</b></div><button class="sec" id="top">Connect YouTube</button></nav>
+
+<section id="landing" class="hero">
+<h1>Turn every stream into<br>a month of Shorts.</h1>
+<p>Pick a niche or streamer. ClipForge finds the best moments, writes captions, descriptions and hashtags, and posts to your channel every day.</p>
+<button class="pri" id="cta">Connect your YouTube channel</button>
+</section>
+
+<section id="app" class="hide">
+<div class="grid g3">
+<div class="card stat"><b id="sClips">0</b><span>Clips ready</span></div>
+<div class="card stat"><b id="sPosted">0</b><span>Posted this week</span></div>
+<div class="card stat"><b id="sNext">–</b><span>Next auto-post</span></div>
+</div>
+
+<h2>1 · Pick your niche</h2>
+<div class="card"><div class="chips" id="chips"></div></div>
+
+<h2>2 · Choose your streamer</h2>
+<div class="card"><div class="chips" id="chips2"></div>
+<div style="margin-top:12px"><input id="custom" placeholder="Or type any streamer's name and press Enter"></div>
+<div class="desc" style="margin-top:8px">Only clip creators who gave you permission to reuse their content.</div></div>
+
+<h2>3 · Automation</h2>
+<div class="grid g2">
+<div class="card row"><div><b>Auto-post daily</b><div class="desc">Publishes your top clip every day</div></div><div class="sw on" id="swPost"></div></div>
+<div class="card row"><div><b>Clip new + old streams</b><div class="desc">Scans the full back catalogue too</div></div><div class="sw on" id="swOld"></div></div>
+<div class="card row"><div><b>Auto captions</b><div class="desc">Burned-in subtitles for Shorts</div></div><div class="sw on" id="swCap"></div></div>
+<div class="card row"><div><b>Posting time</b><div class="desc">Your local time</div></div><input type="time" id="time" value="18:00" style="width:auto"></div>
+</div>
+
+<h2>4 · Clip queue</h2>
+<div class="row" style="margin-bottom:10px"><span class="desc" id="src"></span><button class="pri" id="gen">Generate clips</button></div>
+<div class="grid g2" id="list"></div>
+<div class="note">Demo preview. Clips shown are sample data until the backend is connected.</div>
+</section></div>
+<script>
+const niches=["Gaming","IRL / Just Chatting","Podcasts","Sports","Music","Tech","Finance","Education"];
+const ideas={"Gaming":["Insane 1v4 clutch with zero health","Streamer rage-quits after a trap","Impossible last-second win"],"IRL / Just Chatting":["Chat roasts the host live","Unexpected guest walks in","The story that went off the rails"],"Podcasts":["The hot take nobody expected","Guest reveals a secret","Argument turns into a laugh"],"Sports":["Buzzer-beater reaction","The ref call everyone's debating","Rookie's first big moment"],"Music":["Crowd sings every word","Surprise acoustic version","Backstage freestyle"],"Tech":["The feature Apple hid","Unboxing goes wrong","Speed test shocks everyone"],"Finance":["The mistake costing you thousands","Market move explained in 30s","Side hustle that actually works"],"Education":["The trick teachers never show","Hard concept in 30 seconds","Mind-blowing science fact"]};
+const streamers={"Gaming":["IShowSpeed","Kai Cenat","xQc","Ninja","Pokimane","Valkyrae"],"IRL / Just Chatting":["IShowSpeed","Kai Cenat","xQc","Adin Ross"],"Podcasts":["Joe Rogan","Theo Von","Alex Cooper"],"Sports":["IShowSpeed","Kai Cenat","Adin Ross"],"Music":["Kai Cenat","IShowSpeed","Lofi Girl"],"Tech":["MKBHD","Linus Tech Tips","Mrwhosetheboss"],"Finance":["Graham Stephan","Mark Tilbury"],"Education":["Veritasium","Mark Rober","Kurzgesagt"]};
+let state={niche:"Gaming",streamer:"",n:0,posted:0},clips=[];
+const $=id=>document.getElementById(id);
+try{const s=JSON.parse(localStorage.getItem("cf")||"null");if(s)state=s}catch(e){}
+function save(){try{localStorage.setItem("cf",JSON.stringify(state))}catch(e){}}
+function tags(n,t){const b=n.replace(/[^a-z]/gi,"");return["#Shorts","#"+b,"#Viral","#Clips","#"+(state.streamer||t.split(" ")[0]).replace(/\W/g,"")].join(" ")}
+function make(){if(!state.streamer)state.streamer=(streamers[state.niche]||[])[0]||"";clips=ideas[state.niche]||ideas.Gaming;clips=clips.map((t,i)=>({t,dur:20+i*11,score:96-i*4,q:i>0,d:`${t}. Clipped from a recent ${state.streamer} stream. Subscribe for a new clip every day!`}));render()}
+function render(){
+$("chips").innerHTML=niches.map(n=>`<button class="chip ${n==state.niche?"on":""}" data-n="${n}">${n}</button>`).join("");
+$("src").textContent="Source: "+state.streamer+" · "+state.niche;
+$("chips2").innerHTML=(streamers[state.niche]||[]).concat(state.streamer&&!(streamers[state.niche]||[]).includes(state.streamer)?[state.streamer]:[]).map(s=>`<button class="chip ${s==state.streamer?"on":""}" data-s="${s}">${s}</button>`).join("");
+$("list").innerHTML=clips.map(c=>`<div class="card clip"><div class="thumb">${c.dur}s</div><div class="meta"><div class="row"><span class="badge ${c.q?"q":""}">${c.q?"Queued":"Ready"}</span><span class="desc">Viral score ${c.score}</span></div><h3>${c.t}</h3><div class="desc">${c.d}</div><div class="tags">${tags(state.niche,c.t)}</div></div></div>`).join("");
+$("sClips").textContent=clips.length;$("sPosted").textContent=state.posted;$("sNext").textContent=$("time").value;
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{if(b.dataset.n){state.niche=b.dataset.n;state.streamer=""}else state.streamer=b.dataset.s;save();make()})}
+function enter(){$("landing").classList.add("hide");$("app").classList.remove("hide");$("top").textContent="Channel connected ✓";state.in=1;save();make()}
+$("cta").onclick=$("top").onclick=enter;
+document.querySelectorAll(".sw").forEach(s=>s.onclick=()=>s.classList.toggle("on"));
+$("time").onchange=render;
+$("custom").onkeydown=e=>{if(e.key==="Enter"&&e.target.value.trim()){state.streamer=e.target.value.trim().slice(0,30);e.target.value="";save();make()}};
+$("gen").onclick=()=>{state.posted++;save();make()};
+if(state.in)enter();
+</script></body></html>
